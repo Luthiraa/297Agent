@@ -52,20 +52,27 @@ def process_response(response):
     highlight = response[index+len(marker):].strip()
     highlights = [item.strip() for item in highlight.split(',')]
     return jsonify({"response": response_text, "highlight": highlights})
-@app.route('/chat', methods=['POST'])
 @app.route('/', methods=['POST'])
 def chat():
-    data = request.json
-    city = data.get("city")
-    query = data.get("query")
-    pois = data.get("pois")
-    if not city or not query or not pois:
-        return jsonify({"error": "Missing city, query, or POIs"}), 400
+    try:
+        data = request.json
+        city = data.get("city")
+        query = data.get("query")
+        pois = data.get("pois")
+        if not city or not query or not pois:
+            return jsonify({"error": "Missing city, query, or POIs"}), 400
 
-    response = llm_chain.invoke(city=city, query=query, pois=pois)
-    print(response)
-    return process_response(response)
-@app.route('/', methods=['GET'])
+        # Attempt to generate a response from the llm chain
+        response = llm_chain.invoke(city=city, query=query, pois=pois)
+        app.logger.info("LLM Chain Response: %s", response)
+        return process_response(response)
+    except Exception as e:
+        # Log the exception to help with debugging
+        app.logger.error("Error processing the chat request", exc_info=e)
+        return jsonify({"error": str(e)}), 500
+
+
+
 def home():
     return "Welcome to the travel assistant API. Use a POST request with JSON payload to interact."
 
