@@ -52,8 +52,8 @@ def process_response(response):
     highlight = response[index+len(marker):].strip()
     highlights = [item.strip() for item in highlight.split(',')]
     return jsonify({"response": response_text, "highlight": highlights})
-
 @app.route('/chat', methods=['POST'])
+@app.route('/', methods=['POST'])
 def chat():
     data = request.json
     city = data.get("city")
@@ -62,10 +62,12 @@ def chat():
     if not city or not query or not pois:
         return jsonify({"error": "Missing city, query, or POIs"}), 400
 
-    # Using invoke with the new runnable chain
     response = llm_chain.invoke(city=city, query=query, pois=pois)
     print(response)
     return process_response(response)
+@app.route('/', methods=['GET'])
+def home():
+    return "Welcome to the travel assistant API. Use a POST request with JSON payload to interact."
 
 # Note: Requests to "/" will return a 404 since no route is defined.
 if __name__ == '__main__':
