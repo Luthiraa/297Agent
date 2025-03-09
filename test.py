@@ -1,7 +1,7 @@
 import requests
 
 # Define the URL of the Flask app
-url = "http://127.0.0.1:5000/chat"
+url = "https://two97agent.onrender.com"
 
 # Define test cases with POIs and features
 test_cases = [

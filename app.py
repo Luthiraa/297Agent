@@ -2,13 +2,12 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from flask import Flask, request, jsonify
-from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
 app = Flask(__name__)
 
-# Load secret key from environment variable (now loaded from .env)
+# Load secret key from environment variable (from .env)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY environment variable is not set")
@@ -40,8 +39,8 @@ Now, here's the user query:
 User Query: {query}"""
 )
 
-# Create an LLM chain
-llm_chain = LLMChain(llm=llm, prompt=prompt_template)
+# Use the new RunnableSequence syntax instead of LLMChain
+llm_chain = prompt_template | llm
 
 def process_response(response):
     marker = "Highlight: "
@@ -63,9 +62,11 @@ def chat():
     if not city or not query or not pois:
         return jsonify({"error": "Missing city, query, or POIs"}), 400
 
-    response = llm_chain.run(city=city, query=query, pois=pois)
+    # Using invoke with the new runnable chain
+    response = llm_chain.invoke(city=city, query=query, pois=pois)
     print(response)
     return process_response(response)
 
+# Note: Requests to "/" will return a 404 since no route is defined.
 if __name__ == '__main__':
     app.run(debug=True)
