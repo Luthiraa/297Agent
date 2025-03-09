@@ -1,7 +1,7 @@
 import requests
 
 # URL for your deployed API endpoint
-url = "http://127.0.0.1:5000"
+url = "https://two97agent.onrender.com"
 
 # Define your test cases with required keys: "city", "query", and "pois"
 test_cases = [

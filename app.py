@@ -43,16 +43,19 @@ User Query: {query}"""
 llm_chain = prompt_template | llm
 
 def process_response(response):
+    # If response is an AIMessage, extract its content.
+    if hasattr(response, "content"):
+        response = response.content
+        
     marker = "Highlight: "
     index = response.find(marker)
     if index == -1:
-        # In case the expected marker was not found, return the whole response and no highlights
+        # In case the expected marker was not found, return the whole response and no highlights.
         return jsonify({"response": response, "highlight": []})
     response_text = response[:index].strip()
     highlight = response[index+len(marker):].strip()
     highlights = [item.strip() for item in highlight.split(',')]
     return jsonify({"response": response_text, "highlight": highlights})
-
 
 @app.route('/', methods=['POST'])
 def chat():
