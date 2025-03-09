@@ -1,27 +1,20 @@
 import requests
 
-# Define the URL of the Flask app
-url = "https://two97agent.onrender.com/chat"
+# URL for your deployed API endpoint
+url = "http://127.0.0.1:5000"
 
-# Define test cases with POIs and features
+# Define your test cases with required keys: "city", "query", and "pois"
 test_cases = [
     {
-        "city": "Paris",
-        "query": "I love food so where should I go?",
-        "pois": {"Eiffel Tower": "tourist_spot", "Louvre Museum":"museum", "Notre-Dame Cathedral":"tourist_spot"},
+        "city": "New York",
+        "query": "What are some good museums to visit?",
+        "pois": "Metropolitan Museum of Art, Museum of Modern Art, American Museum of Natural History"
+    },
+    {
+        "city": "San Francisco",
+        "query": "Where can I find the best views?",
+        "pois": "Golden Gate Bridge, Twin Peaks, Coit Tower"
     }
-    # {
-    #     "city": "New York",
-    #     "query": "What are some famous landmarks and parks?",
-    #     "pois": ["Statue of Liberty", "Central Park", "Times Square"],
-    #     "features": ["Hudson River", "Brooklyn Bridge", "Prospect Park"]
-    # },
-    # {
-    #     "city": "Tokyo",
-    #     "query": "What are some popular tourist spots and natural features?",
-    #     "pois": ["Shibuya Crossing", "Tokyo Tower", "Meiji Shrine"],
-    #     "features": ["Sumida River", "Ueno Park", "Mount Takao"]
-    # }
 ]
 
 # Test each case

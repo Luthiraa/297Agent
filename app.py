@@ -52,6 +52,8 @@ def process_response(response):
     highlight = response[index+len(marker):].strip()
     highlights = [item.strip() for item in highlight.split(',')]
     return jsonify({"response": response_text, "highlight": highlights})
+
+
 @app.route('/', methods=['POST'])
 def chat():
     try:
@@ -62,15 +64,13 @@ def chat():
         if not city or not query or not pois:
             return jsonify({"error": "Missing city, query, or POIs"}), 400
 
-        # Attempt to generate a response from the llm chain
-        response = llm_chain.invoke(city=city, query=query, pois=pois)
+        # Pass a dictionary as the input to the chain
+        response = llm_chain.invoke({"city": city, "query": query, "pois": pois})
         app.logger.info("LLM Chain Response: %s", response)
         return process_response(response)
     except Exception as e:
-        # Log the exception to help with debugging
         app.logger.error("Error processing the chat request", exc_info=e)
         return jsonify({"error": str(e)}), 500
-
 
 
 def home():
