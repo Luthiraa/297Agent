@@ -94,7 +94,7 @@ def process_response(response):
         waymarks = [w.strip() for w in waymark_text.split(',') if w.strip()]
     
     if len(waymarks) == 0:
-        highlights.append("None")
+        waymarks.append("None")
 
     return {
         "response": bot_text,
