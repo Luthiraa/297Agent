@@ -94,7 +94,7 @@ def process_response(response):
         waymarks = [w.strip() for w in waymark_text.split(',') if w.strip()]
     
     if len(waymarks) == 0:
-        waymarks.append("None")
+        highlights.append("None")
 
     return {
         "response": bot_text,
@@ -103,10 +103,6 @@ def process_response(response):
     }
 
 # ----- FLASK APPLICATION -----
-# Flask App
-app = Flask(__name__)
-
-# Flask route
 # Flask App
 app = Flask(__name__)
 
